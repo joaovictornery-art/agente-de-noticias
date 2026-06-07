@@ -8,8 +8,20 @@ O V1 faz quatro coisas:
 
 - Coleta noticias das fontes combinadas: OpenAI, Anthropic, Google AI Blog e TechCrunch AI.
 - Remove itens repetidos e ignora noticias ja enviadas.
-- Seleciona ate 5 itens por briefing usando sinais simples de impacto, relevancia pratica, inovacao, urgencia e peso da fonte.
-- Gera uma mensagem em portugues com resumo, motivo de importancia e link.
+- Seleciona ate 5 itens por briefing usando criterios ligados a carreira, portfolio, trabalho, mercado e aplicabilidade real.
+- Gera uma mensagem em portugues com resumo, motivo de importancia, aplicacao possivel e link.
+
+## Criterios de curadoria
+
+O radar prioriza noticias que ajudam o Joao a crescer como AI Solutions Builder / AI Product Builder.
+
+Ordem de prioridade:
+
+1. Crescimento profissional pessoal: agentes, automacoes, integracoes, APIs, RAG, MCP, OpenAI, Anthropic, Gemini, Claude, Codex, n8n e ferramentas para construir solucoes com IA.
+2. Portfolio e projetos pessoais: ideias que possam virar projeto publico, demonstracao, README, dashboard, assistente, base de conhecimento ou automacao real.
+3. Aplicacao no trabalho: suporte com IA, ticket intelligence, Knowledge Hub, KBChat, Salesforce, Botmaker, customer intelligence, embeddings, privacidade, Firebase, logs e observabilidade.
+4. Mercado e estrategia: movimentos relevantes de Big Techs, startups, plataformas e casos reais de adocao.
+5. Pesquisa ou hype: benchmarks, funding, valuation e pesquisa pura so entram bem quando tiverem aplicacao clara para carreira, portfolio ou trabalho.
 
 ## Como rodar
 

@@ -212,6 +212,10 @@ function cleanListingTitle(value) {
     /^(.+?)(Announcements|Product|Policy|Research|Company|Engineering|Global Affairs)[A-Z][a-z]{2}\s+\d{1,2},\s+\d{4}.+$/i,
     "$1"
   );
+  title = title.replace(
+    /^(.+?)(Announcements|Product|Policy|Research|Company|Engineering|Global Affairs)(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+\d{1,2},\s+\d{4}$/i,
+    "$1"
+  );
 
   return title.replace(/\s+/g, " ").trim();
 }

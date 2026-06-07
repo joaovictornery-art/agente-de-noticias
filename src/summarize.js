@@ -9,7 +9,8 @@ export async function summarizeItems(items, config) {
     return items.map((item) => ({
       ...item,
       shortSummary: fallbackSummary(item),
-      whyItMatters: fallbackWhyItMatters(item)
+      whyItMatters: fallbackWhyItMatters(item),
+      practicalApplication: fallbackPracticalApplication(item)
     }));
   }
 
@@ -28,7 +29,8 @@ async function summarizeWithGemini(items, config) {
   return items.map((item, index) => ({
     ...item,
     shortSummary: summaries[index]?.shortSummary || fallbackSummary(item),
-    whyItMatters: summaries[index]?.whyItMatters || fallbackWhyItMatters(item)
+    whyItMatters: summaries[index]?.whyItMatters || fallbackWhyItMatters(item),
+    practicalApplication: summaries[index]?.practicalApplication || fallbackPracticalApplication(item)
   }));
 }
 
@@ -39,6 +41,8 @@ function buildPrompt(items, language) {
     title: item.title,
     summary: item.summary,
     url: item.url,
+    priorityCategory: item.priorityCategory,
+    applicationArea: item.applicationArea,
     rankingReason: item.reason
   }));
 
@@ -49,7 +53,8 @@ Idioma: ${language}.
 
 Para cada item, gere:
 - shortSummary: resumo em ate 220 caracteres.
-- whyItMatters: por que isso importa em ate 180 caracteres, com foco em impacto pratico.
+- whyItMatters: por que isso importa em ate 180 caracteres, priorizando carreira pessoal e portfolio antes do trabalho.
+- practicalApplication: uma aplicacao possivel em ate 160 caracteres.
 
 Itens:
 ${JSON.stringify(payload, null, 2)}
@@ -80,7 +85,23 @@ function fallbackWhyItMatters(item) {
     return `Selecionada por ${item.reason}.`;
   }
 
-  return "Selecionada por relevancia para IA, automacoes ou negocios.";
+  return "Selecionada por relevancia para sua trilha em IA aplicada, automacoes e solucoes.";
+}
+
+function fallbackPracticalApplication(item) {
+  if (item.applicationArea === "trabalho na Stays") {
+    return "Avaliar se a ideia ajuda suporte, base de conhecimento, ticket intelligence ou automacao interna.";
+  }
+
+  if (item.applicationArea === "portfolio/projeto proprio") {
+    return "Transformar o conceito em um pequeno projeto demonstravel para GitHub, README ou entrevista.";
+  }
+
+  if (item.applicationArea === "carreira pessoal") {
+    return "Usar como repertorio para estudar, construir solucoes com IA e fortalecer narrativa profissional.";
+  }
+
+  return "Guardar como sinal de mercado e acompanhar se surgir aplicacao pratica.";
 }
 
 function truncate(value, maxLength) {
