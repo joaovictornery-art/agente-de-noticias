@@ -51,6 +51,48 @@ Validar a sintaxe dos arquivos principais:
 npm.cmd run check
 ```
 
+## Como colocar no ar pelo GitHub Actions
+
+O jeito mais simples e sem servidor pago e usar o proprio GitHub Actions.
+
+O workflow ja esta configurado em:
+
+```text
+.github/workflows/send-digest.yml
+```
+
+Ele roda:
+
+- Toda segunda e quinta.
+- As 08:00 no horario de Sao Paulo.
+- Tambem manualmente pelo botao `Run workflow` dentro da aba `Actions`.
+
+### Secrets obrigatorios
+
+No GitHub, abra:
+
+```text
+Settings -> Secrets and variables -> Actions -> New repository secret
+```
+
+Crie estes secrets:
+
+```text
+TELEGRAM_BOT_TOKEN
+TELEGRAM_CHAT_ID
+```
+
+O `GEMINI_API_KEY` e opcional. Sem ele, o projeto envia um resumo simples usando titulo/descricao da noticia.
+
+### Como testar depois das chaves
+
+Depois de cadastrar os secrets:
+
+1. Entre na aba `Actions` do repositorio.
+2. Clique em `Send news digest`.
+3. Clique em `Run workflow`.
+4. Confirme se a mensagem chegou no Telegram.
+
 ## O que acontece sem chaves
 
 - Sem `GEMINI_API_KEY`: o projeto usa um resumo local simples com base no titulo/descricao.
@@ -79,6 +121,6 @@ Essa pasta fica fora do Git para nao versionar seu historico pessoal.
 
 ## Limite atual
 
-O projeto esta pronto para uso local. A proxima parte que depende de voce e criar o repositorio no GitHub e subir estes arquivos.
+O projeto esta pronto para uso local e para rodar no GitHub Actions. A parte que ainda depende de voce e cadastrar as chaves do Telegram como secrets no GitHub.
 
 Observacao sobre fontes: a OpenAI bloqueou a coleta direta da pagina oficial durante os testes locais, entao o V1 usa a pagina publica da OpenRSS como espelho de listagem. Os links finais continuam apontando para `openai.com`.

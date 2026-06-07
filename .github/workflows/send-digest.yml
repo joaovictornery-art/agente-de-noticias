@@ -1,0 +1,51 @@
+name: Send news digest
+
+on:
+  workflow_dispatch:
+  schedule:
+    # 08:00 America/Sao_Paulo. GitHub Actions schedules use UTC.
+    - cron: "0 11 * * 1,4"
+
+jobs:
+  send-digest:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Restore sent-items history
+        uses: actions/cache/restore@v4
+        with:
+          path: data/sent-items.json
+          key: sent-items-${{ github.run_id }}
+          restore-keys: |
+            sent-items-
+
+      - name: Send digest to Telegram
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_MODEL: ${{ vars.GEMINI_MODEL || 'gemini-1.5-flash' }}
+          MAX_ITEMS_PER_DIGEST: ${{ vars.MAX_ITEMS_PER_DIGEST || '5' }}
+          LOOKBACK_DAYS: ${{ vars.LOOKBACK_DAYS || '14' }}
+          DIGEST_LANGUAGE: pt-BR
+          SENT_ITEMS_PATH: data/sent-items.json
+        run: npm run send
+
+      - name: Save sent-items history
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: data/sent-items.json
+          key: sent-items-${{ github.run_id }}
