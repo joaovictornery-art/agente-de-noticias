@@ -9,6 +9,8 @@ on:
 jobs:
   send-digest:
     runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
     steps:
       - name: Checkout repository
@@ -31,6 +33,22 @@ jobs:
           restore-keys: |
             sent-items-
 
+      - name: Validate required secrets
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          missing=0
+          if [ -z "$TELEGRAM_BOT_TOKEN" ]; then
+            echo "::error::Missing repository secret TELEGRAM_BOT_TOKEN"
+            missing=1
+          fi
+          if [ -z "$TELEGRAM_CHAT_ID" ]; then
+            echo "::error::Missing repository secret TELEGRAM_CHAT_ID"
+            missing=1
+          fi
+          exit "$missing"
+
       - name: Send digest to Telegram
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
@@ -44,7 +62,7 @@ jobs:
         run: npm run send
 
       - name: Save sent-items history
-        if: always()
+        if: success() && hashFiles('data/sent-items.json') != ''
         uses: actions/cache/save@v4
         with:
           path: data/sent-items.json
