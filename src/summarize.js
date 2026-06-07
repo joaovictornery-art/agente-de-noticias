@@ -76,8 +76,10 @@ function parseJsonArray(text) {
 }
 
 function fallbackSummary(item) {
-  const sourceText = item.summary || item.title;
-  return truncate(sourceText, 220);
+  const title = stripTrailingPunctuation(item.title);
+  const category = item.priorityCategory || "IA aplicada";
+
+  return truncate(`Atualizacao monitorada: ${title}. Entrou no radar por conexao com ${category.toLowerCase()}.`, 220);
 }
 
 function fallbackWhyItMatters(item) {
@@ -112,4 +114,8 @@ function truncate(value, maxLength) {
   }
 
   return `${text.slice(0, maxLength - 1).trim()}...`;
+}
+
+function stripTrailingPunctuation(value) {
+  return String(value ?? "").replace(/[.!?]+$/g, "").trim();
 }
