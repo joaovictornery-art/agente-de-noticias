@@ -8,8 +8,8 @@ export function buildDigestMessage(items) {
   }).format(new Date());
 
   const lines = [
-    "<b>Radar de IA aplicada e carreira</b>",
-    `<i>${escapeHtml(date)} - ${items.length} noticias selecionadas</i>`,
+    "<b>Radar da IA</b>",
+    `<i>${escapeHtml(date)} - as melhores ${items.length} noticias</i>`,
     ""
   ];
 
@@ -17,10 +17,7 @@ export function buildDigestMessage(items) {
     lines.push(`<b>${index + 1}. ${escapeHtml(item.title)}</b>`);
     lines.push(`Fonte: ${escapeHtml(item.source)}`);
     lines.push(`Categoria: ${escapeHtml(item.priorityCategory)}`);
-    lines.push(`Aplicacao: ${escapeHtml(item.applicationArea)}`);
     lines.push(`Resumo: ${escapeHtml(item.shortSummary)}`);
-    lines.push(`Por que importa: ${escapeHtml(item.whyItMatters)}`);
-    lines.push(`Uso possivel: ${escapeHtml(item.practicalApplication)}`);
     lines.push(`Link: ${escapeHtml(item.url)}`);
     lines.push("");
   });
