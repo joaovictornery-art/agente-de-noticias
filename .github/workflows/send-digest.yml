@@ -3,8 +3,9 @@ name: Send news digest
 on:
   workflow_dispatch:
   schedule:
-    # 08:00 America/Sao_Paulo. GitHub Actions schedules use UTC.
-    - cron: "0 11 * * 1,4"
+    # 08:17 America/Sao_Paulo. GitHub Actions schedules use UTC.
+    # Avoid minute 0 because GitHub can delay or drop jobs during top-of-hour load.
+    - cron: "17 11 * * 1,4"
 
 jobs:
   send-digest:
